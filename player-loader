@@ -1,0 +1,130 @@
+---------------------------------------------------------------------------------------------------------------
+------------------------------------- Player Tab -------------------------------------
+---------------------------------------------------------------------------------------------------------------
+
+local PlayerTab = Window:CreateTab("🚶‍♂️ Player", nil) 
+
+PlayerTab:CreateLabel(" Player ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
+
+local ResetCharacterButton = PlayerTab:CreateButton({   ------------------------------------- Reset
+    Name = "Reset Character",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.Health = 0
+            Rayfield:Notify({
+                Title = "Character Reset",
+                Content = "Your character has been reset.",
+                Duration = 4
+            })
+        end
+    end,
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
+local SitButton = PlayerTab:CreateButton({   ------------------------------------- Sit
+    Name = "Sit",
+    Callback = function()
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local character = LocalPlayer.Character
+        if character then
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            if humanoid then
+                humanoid.Sit = true
+                Rayfield:Notify({
+                Title = "Character Sit",
+                Content = "Your character has sitted down.",
+                Duration = 4
+            })
+            end
+        end
+    end,
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
+getgenv().Invincible = false   ------------------------------------- GodMode
+local loop
+
+PlayerTab:CreateToggle({
+    Name = "Invincibility (Has bugs)",
+    CurrentValue = false,
+    Flag = "InvincibleToggle",
+    Callback = function(state)
+        getgenv().Invincible = state
+
+        if state then
+            Rayfield:Notify({
+                Title = "Invincibility ON",
+                Content = "Hitbox protection activated.",
+                Duration = 4
+            })
+
+            loop = task.spawn(function()
+                local LocalPlayer = game:GetService("Players").LocalPlayer
+                while getgenv().Invincible do
+                    if LocalPlayer.Character then
+                        for _, v in ipairs(LocalPlayer.Character:GetChildren()) do
+                            if v.Name == "hitbox" then
+                                v:Destroy()
+                            end
+                        end
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        else
+            Rayfield:Notify({
+                Title = "Invincibility OFF",
+                Content = "Hitbox protection deactivated.",
+                Duration = 4
+            })
+
+            if loop then
+                task.cancel(loop)
+                loop = nil
+            end
+        end
+    end
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
+local RemoveFallDamageButton = PlayerTab:CreateButton({   ------------------------------------- Fall Damage Remover
+    Name = "Remove Fall Damage",
+    Callback = function()
+        local char = game:GetService("Players").LocalPlayer.Character
+        if char and char:FindFirstChild("FallDamage") then
+            char.FallDamage:Destroy()
+            Rayfield:Notify({
+                Title = "Fall Damage Disabled",
+                Content = "Fall Damage sucessfully disabled.",
+                Duration = 4
+            })
+        else
+            Rayfield:Notify({
+                Title = "No FallDamage Found",
+                Content = "Can't find object 'FallDamage' in character. Game uses ServerSide Fall Damage system or already deleted Fall Damage.",
+                Duration = 6
+            })
+        end
+    end,
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
+PlayerTab:CreateLabel(" Comming Soon... ", nil, Color3.fromRGB(30,30,30), false)
