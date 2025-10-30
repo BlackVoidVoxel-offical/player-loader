@@ -138,4 +138,36 @@ PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
 
 ---------------------------------------------------------------------------------------------------------------
 
+local Players = game:GetService("Players")   ------------------------------------- GodMode
+local LocalPlayer = Players.LocalPlayer
+
+local oldHealth
+
+local GodmodeToggle = CombatTab:CreateToggle({
+    Name = "Godmode",
+    CurrentValue = false,
+    Flag = "GodmodeToggle",
+    Callback = function(value)
+        local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+        local humanoid = char:FindFirstChildWhichIsA("Humanoid")
+
+        if humanoid then
+            if value then
+                oldHealth = humanoid.MaxHealth
+                humanoid.MaxHealth = math.huge
+                humanoid.Health = math.huge
+            else
+                if oldHealth then
+                    humanoid.MaxHealth = oldHealth
+                    humanoid.Health = oldHealth
+                end
+            end
+        end
+    end,
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
 PlayerTab:CreateLabel(" Comming Soon... ", nil, Color3.fromRGB(30,30,30), false)
