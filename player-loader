@@ -127,4 +127,15 @@ PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
 
 ---------------------------------------------------------------------------------------------------------------
 
+PlayerTab:CreateButton({
+    Name = "Touch Fling GUI",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/BlackVoidVoxel-offical/touch-fling/refs/heads/main/touch-fling"))()
+    end,
+})
+
+PlayerTab:CreateLabel(" ", nil, Color3.fromRGB(30,30,30), false)
+
+---------------------------------------------------------------------------------------------------------------
+
 PlayerTab:CreateLabel(" Comming Soon... ", nil, Color3.fromRGB(30,30,30), false)
